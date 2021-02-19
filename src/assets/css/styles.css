@@ -1,0 +1,30 @@
+body {
+    width: 100%;
+    min-height: 100vh;
+}
+
+header {
+    display: flex;
+    width: 100%;
+    padding: 1rem;
+    color: var(--bs-white);
+    background-color: var(--bs-gray);
+    justify-content: space-between;
+    align-items: center;
+}
+
+#container-login {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#container-login .card {
+    min-width: 30%;
+}
+
+.error-msg {
+    color: var(--bs-danger);
+}
