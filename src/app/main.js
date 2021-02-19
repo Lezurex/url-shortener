@@ -1,6 +1,8 @@
 import Header from "./components/Top.js";
 import Login from "./components/Login.js";
 import Dashboard from "./components/Dashboard.js";
+import Sidebar from "./components/Sidebar.js";
+import Links from "./components/Links.js";
 
 const app = Vue.createApp({
     data() {
@@ -29,5 +31,7 @@ const app = Vue.createApp({
 app.component("top", Header);
 app.component("login", Login);
 app.component("dashboard", Dashboard);
+app.component("sidebar", Sidebar);
+app.component("links", Links);
 
 const mountedApp = app.mount("app");

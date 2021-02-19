@@ -13,6 +13,39 @@ header {
     align-items: center;
 }
 
+main {
+    display: flex;
+    min-height: 100%;
+}
+
+aside {
+    background-color: var(--bs-gray);
+    min-width: 20%;
+}
+
+aside ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+aside ul li {
+    background-color: var(--bs-gray);
+    color: var(--bs-white);
+    padding: 1rem;
+    cursor: pointer;
+    transition: .5s;
+}
+
+aside ul li.active, aside ul li:hover {
+    filter: brightness(.7);
+    transition: .5s;
+}
+
+#main-content {
+    padding: 2rem;
+}
+
 #container-login {
     width: 100%;
     height: 100vh;
