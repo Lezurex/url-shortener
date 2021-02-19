@@ -1,0 +1,18 @@
+version: "3.6"
+
+services: 
+  php:
+    image: bitnami/php-fpm:8.0
+    volumes:
+      - ./src:/app
+      - ./php/php.ini:/opt/bitnami/php/etc/conf.d/php.ini:ro
+  apache:
+    image: bitnami/apache:2.4
+    depends_on:
+      - php
+    volumes:
+      - ./src:/app
+      - ./apache/my_vhost.conf:/vhosts/myapp.conf:ro
+      - ./apache/certs:/certs
+    ports:
+    - "8000:8080"
