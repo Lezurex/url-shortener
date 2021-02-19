@@ -1,6 +1,16 @@
 <?php
 
+require_once 'apiHandlers/AuthHandler.php';
+
+use APIHandlers\AuthHandler;
+
 header("content-type: application/json");
+
+$defaultStructure = array("links" => array(), "user" => array("username" => "admin", "password" => '$2y$10$YRveeDBJvB5pr.1/VaK/8e9AXKvqfY5s9tiDzvbXhWxFkiVLi74cC'));
+
+if (!file_exists("../data/data.json")) {
+    file_put_contents("../data/data.json", json_encode($defaultStructure));
+}
 
 $requestParts = explode("/", $_SERVER['REQUEST_URI']);
 foreach ($requestParts as $key => $requestPart) {
@@ -11,6 +21,9 @@ foreach ($requestParts as $key => $requestPart) {
 $requestParts = array_values($requestParts);
 $handler = null;
 switch ($requestParts[1]) {
+    case "auth":
+        $handler = new AuthHandler();
+        break;
     default:
         $handler = null;
         break;
