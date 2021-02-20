@@ -61,3 +61,21 @@ aside ul li.active, aside ul li:hover {
 .error-msg {
     color: var(--bs-danger);
 }
+
+/*LINKS*/
+#links-list {
+    display: block;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.link-element-header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.link-element-header-container button {
+    margin-left: 1rem;
+}

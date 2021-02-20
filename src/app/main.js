@@ -3,6 +3,7 @@ import Login from "./components/Login.js";
 import Dashboard from "./components/Dashboard.js";
 import Sidebar from "./components/Sidebar.js";
 import Links from "./components/Links.js";
+import LinkElement from "./components/LinkElement.js";
 
 const app = Vue.createApp({
     data() {
@@ -33,5 +34,6 @@ app.component("login", Login);
 app.component("dashboard", Dashboard);
 app.component("sidebar", Sidebar);
 app.component("links", Links);
+app.component("linkElement", LinkElement)
 
 const mountedApp = app.mount("app");

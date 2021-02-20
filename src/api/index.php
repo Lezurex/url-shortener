@@ -1,8 +1,10 @@
 <?php
 
 require_once 'apiHandlers/AuthHandler.php';
+require_once 'apiHandlers/LinkHandler.php';
 
 use APIHandlers\AuthHandler;
+use APIHandlers\LinkHandler;
 
 header("content-type: application/json");
 
@@ -23,6 +25,9 @@ $handler = null;
 switch ($requestParts[1]) {
     case "auth":
         $handler = new AuthHandler();
+        break;
+    case "links":
+        $handler = new LinkHandler();
         break;
     default:
         $handler = null;

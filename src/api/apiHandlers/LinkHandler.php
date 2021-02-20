@@ -3,9 +3,11 @@
 
 namespace APIHandlers;
 
+use Objects\Link;
+
 require_once 'APIHandler.php';
-require_once '../objects/Link.php';
-require_once '../objects/Statistics.php';
+require_once __DIR__.'/../objects/Link.php';
+require_once __DIR__.'/../objects/Statistics.php';
 
 class LinkHandler extends APIHandler {
 
@@ -18,12 +20,19 @@ class LinkHandler extends APIHandler {
                     "error" => "Session invalid"
                 ))
             ));
+            exit();
         }
         parent::handle($parts);
     }
 
     public function handleGet($parts, $body) {
-
+        if (isset($parts[2])) {
+            // do stuff
+        } else {
+            print json_encode(array(
+                "data" =>  Link::getAll()
+            ));
+        }
     }
 
     public function handlePost($parts, $body) {

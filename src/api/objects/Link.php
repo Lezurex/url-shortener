@@ -23,6 +23,17 @@ class Link {
         return $link;
     }
 
+    public static function getAll() : array {
+        $data = json_decode(file_get_contents(__DIR__."/../../data/data.json"), true);
+        $links = $data['links'];
+        $array = array();
+        foreach ($links as $linkData) {
+            $link = self::fromArray($linkData);
+            $array[] = $link->toArray();
+        }
+        return $array;
+    }
+
     public function save() {
         $data = json_decode(file_get_contents(__DIR__.'/../../data/data.json'), true);
         $data['links'][$this->uuid] = $this->toArray();
