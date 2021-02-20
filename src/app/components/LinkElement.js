@@ -24,23 +24,23 @@ export default {
         </div>
       </div>
       <div v-if="expanded" class="card-body">
-        <label for="shortened" class="form-label">Shortened URL</label>
+        <label :for="link.uuid + '-shortened'" class="form-label">Shortened URL</label>
         <div class="input-group mb-3">
           <span class="input-group-text">{{ getWindowOrigin() + "/" }}</span>
           <input @change="checkValues" @keyup="checkValues" v-model="link.short" type="text" class="form-control"
-                 id="shortened">
+                 :id="link.uuid + '-shortened'">
           <button @click="randomShort" class="btn btn-outline-secondary" type="button" id="button-addon2">↻
           </button>
         </div>
         <div class="mb-3">
-          <label for="link" class="form-label">Target URL</label>
-          <input autocomplete="off" @change="checkValues" @keyup="checkValues" v-model="link.link" placeholder="https://" type="url" class="form-control" id="link">
+          <label :for="link.uuid + '-shortened'" class="form-label">Target URL</label>
+          <input autocomplete="off" @change="checkValues" @keyup="checkValues" v-model="link.link" placeholder="https://" type="url" class="form-control" :id="link.uuid + '-link'">
         </div>
         <p class="error-msg" v-html="errorMsg"></p>
         <div class="d-flex flex-row-reverse">
           
         </div>
-        <button class="btn btn-success">Save</button>
+        <button :id="link.uuid + '-save'" class="btn btn-success">Save</button>
         <hr>
         <b>Statistics</b>
         <ul>
@@ -55,11 +55,13 @@ export default {
         },
         checkValues() {
             this.errorMsg = "";
-            const shortInput = document.getElementById("shortened");
-            const linkInput = document.getElementById("link");
+            const shortInput = document.getElementById(this.link.uuid + "-shortened");
+            const linkInput = document.getElementById(this.link.uuid + "-link");
+            const button = document.getElementById(this.link.uuid + "-save");
 
             shortInput.classList.remove("is-invalid");
             linkInput.classList.remove("is-invalid");
+            button.removeAttribute("disabled");
 
             if (this.link.short) {
                 for (const key in this.allLinks) {
@@ -77,11 +79,25 @@ export default {
                 this.errorMsg += "<p>The short link may not be empty!</p>"
             }
 
+            if (this.link.short.length < 4) {
+                shortInput.classList.add("is-invalid")
+                this.errorMsg += "<p>The short link may have more than 4 characters!</p>"
+            }
 
             if (!this.validURL(this.link.link)) {
                 linkInput.classList.add("is-invalid");
                 this.errorMsg += "<p>This is not a valid URL!</p>";
             }
+
+            if (this.link.link.includes(window.location.origin)) {
+                linkInput.classList.add("is-invalid");
+                this.errorMsg += "<p>You cannot shorten an already shortened link!</p>";
+            }
+            if (this.errorMsg !== "") {
+                button.setAttribute("disabled", "disabled");
+            }
+
+            return this.errorMsg === "";
         },
         randomShort() {
             this.link.short = this.makeid(8);
