@@ -14,7 +14,25 @@ class Link {
 
     public Statistics $statistics;
 
-    public static function fromArray($array): Link {
+    /**
+     * Link constructor.
+     */
+    public function __construct() {
+        $this->statistics = new Statistics();
+    }
+
+
+    public static function fromUUID($uuid) : Link|bool {
+        $linksArray = json_decode(file_get_contents(__DIR__."/../../data/data.json"), true)['links'];
+        if (isset($linksArray[$uuid])) {
+            $linkData = $linksArray[$uuid];
+            $link = self::fromArray($linkData);
+            return $link;
+        }
+        return false;
+    }
+
+    public static function fromArray($array) : Link {
         $link = new Link();
         $link->uuid = $array['uuid'];
         $link->link = $array['link'];
@@ -37,6 +55,12 @@ class Link {
     public function save() {
         $data = json_decode(file_get_contents(__DIR__.'/../../data/data.json'), true);
         $data['links'][$this->uuid] = $this->toArray();
+        file_put_contents(__DIR__.'/../../data/data.json', json_encode($data));
+    }
+
+    public function delete() {
+        $data = json_decode(file_get_contents(__DIR__.'/../../data/data.json'), true);
+        unset($data['links'][$this->uuid]);
         file_put_contents(__DIR__.'/../../data/data.json', json_encode($data));
     }
 

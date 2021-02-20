@@ -4,6 +4,7 @@ import Dashboard from "./components/Dashboard.js";
 import Sidebar from "./components/Sidebar.js";
 import Links from "./components/Links.js";
 import LinkElement from "./components/LinkElement.js";
+import LinkAdder from "./components/LinkAdder.js";
 
 const app = Vue.createApp({
     data() {
@@ -12,11 +13,13 @@ const app = Vue.createApp({
         }
     },
     template: `
+      
         <login :main="this" v-if="loggedin === false"></login>
         <dashboard :main="this" v-if="loggedin === true"></dashboard>
-        
     `,
-    methods: {},
+    methods: {
+
+    },
     mounted: function () {
         let that = this;
         let loggedinRequest = new XMLHttpRequest();
@@ -34,6 +37,7 @@ app.component("login", Login);
 app.component("dashboard", Dashboard);
 app.component("sidebar", Sidebar);
 app.component("links", Links);
-app.component("linkElement", LinkElement)
+app.component("linkElement", LinkElement);
+app.component("linkAdder", LinkAdder);
 
 const mountedApp = app.mount("app");

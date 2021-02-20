@@ -3,40 +3,24 @@ import Link from "../objects/Link.js";
 export default {
     props: {
         allLinks: {},
-        link: Link,
     },
     data() {
         return {
-            expanded: false,
-            errorMsg: "",
-            deleteConfirm: false,
-            deleteText: "Delete",
+            link: new Link(),
+            errorMsg: ""
         }
     },
     template: `
-      <li class="card">
-      <div class="card-header">
-        <div class="link-element-header-container">
-          <div>
-            <a target="_blank" :href="link.getShortURL()">{{ link.getShortURL() }}</a>
-            <input class="copy-box" :id="link.uuid + '-shortInput'" :value="link.getShortURL()" type="text">
-            &rarr;
-            <a :href="link.link">{{ link.link }}</a>
-          </div>
-          <div>
-            <button @click="copyShort" class="btn btn-secondary">Copy</button>
-            <button @click="expanded = !expanded" class="btn btn-primary">{{ expanded ? "&uarr;" : "&darr;" }}</button>
-          </div>
-        </div>
-      </div>
-      <div v-if="expanded" class="card-body">
+      <div style="margin-top: 1rem" class="card">
+      
+      <div class="card-body">
         <label :for="link.uuid + '-shortened'" class="form-label">Shortened URL</label>
         <div class="input-group mb-3">
           <span class="input-group-text">{{ getWindowOrigin() + "/" }}</span>
           <input @change="checkValues" @keyup="checkValues" v-model="link.short" type="text" class="form-control"
                  :id="link.uuid + '-shortened'">
-          <button @click="randomShort" class="btn btn-outline-secondary" type="button" id="button-addon2">↻
-          </button>
+          <button @click="randomShort" class="btn btn-outline-secondary" type="button">↻</button>
+          <button @click="copyShort" class="btn btn-outline-secondary">Copy Link</button>
         </div>
         <div class="mb-3">
           <label :for="link.uuid + '-shortened'" class="form-label">Target URL</label>
@@ -47,15 +31,11 @@ export default {
         <div class="d-flex flex-row-reverse">
 
         </div>
-        <button @click="deleteLink" style="margin-right: 1rem" class="btn btn-danger">{{deleteText}}</button>
+        <input class="copy-box" :id="link.uuid + '-shortInput'" :value="link.getShortURL()" type="text">
+
         <button @click="save" :id="link.uuid + '-save'" class="btn btn-success">Save</button>
-        <hr>
-        <b>Statistics</b>
-        <ul>
-          <li>Clicks: {{ link.statistics.clicks }}</li>
-        </ul>
       </div>
-      </li>
+      </div>
     `,
     methods: {
         getWindowOrigin() {
@@ -113,13 +93,15 @@ export default {
             return this.errorMsg === "";
         },
         save() {
+            let that = this;
             if (!this.checkValues())
                 return;
             let saveRequest = new XMLHttpRequest();
-            saveRequest.open("PUT", window.location.origin + "/api/links/" + this.link.uuid);
+            saveRequest.open("POST", window.location.origin + "/api/links/");
             saveRequest.addEventListener("load", function () {
                 if (saveRequest.status === 200) {
-
+                    that.$emit("updatelinks");
+                    that.$emit("close");
                 }
             });
             let body = JSON.stringify({
@@ -166,22 +148,11 @@ export default {
         },
         onlyLettersAndNums(str) {
             return str.match("^[A-Za-z0-9]+$");
-        },
-        deleteLink() {
-            if (this.deleteConfirm) {
-                let that = this;
-                let deleteRequest = new XMLHttpRequest();
-                deleteRequest.open("DELETE", window.location.origin + "/api/links/" + this.link.uuid);
-                deleteRequest.addEventListener("load", function () {
-                    that.$emit("updatelinks");
-                });
-                deleteRequest.send();
-            } else {
-                this.deleteConfirm = true;
-                this.deleteText = "Confirm?";
-            }
         }
     },
     mounted: function () {
+        this.link.uuid = "";
+        this.link.short = "";
+        this.link.link = "";
     }
 }
