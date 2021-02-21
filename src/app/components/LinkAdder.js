@@ -27,6 +27,10 @@ export default {
           <input autocomplete="off" @change="checkValues" @keyup="checkValues" v-model="link.link"
                  placeholder="https://" type="url" class="form-control" :id="link.uuid + '-link'">
         </div>
+        <div class="form-check form-switch">
+          <input v-model="link.noPreview" class="form-check-input" type="checkbox" :id="link.uuid + '-noPreview'">
+          <label class="form-check-label" :for="link.uuid + '-noPreview'" data-bs-toggle="tooltip" data-bs-placement="top" title="When sent in a chat app like Discord or WhatsApp, there will be no preview.">Rickroll mode</label>
+        </div>
         <p class="error-msg" v-html="errorMsg"></p>
         <div class="d-flex flex-row-reverse">
 
@@ -108,7 +112,8 @@ export default {
                 "data": [
                     {
                         "link": this.link.link,
-                        "short": this.link.short
+                        "short": this.link.short,
+                        "noPreview": this.link.noPreview
                     }
                 ]
             });

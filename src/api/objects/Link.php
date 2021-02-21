@@ -11,6 +11,7 @@ class Link {
     public string $uuid;
     public string $link;
     public string $short;
+    public bool $noPreview;
 
     public Statistics $statistics;
 
@@ -37,6 +38,7 @@ class Link {
         $link->uuid = $array['uuid'];
         $link->link = $array['link'];
         $link->short = $array['short'];
+        $link->noPreview = $array['noPreview'];
         $link->statistics = Statistics::fromArray($array['statistics']);
         return $link;
     }
@@ -69,6 +71,7 @@ class Link {
             "uuid" => $this->uuid,
             "link" => $this->link,
             "short" => $this->short,
+            "noPreview" => $this->noPreview,
             "statistics" => $this->statistics->toArray()
         );
     }

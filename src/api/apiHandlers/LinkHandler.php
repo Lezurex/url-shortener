@@ -44,6 +44,7 @@ class LinkHandler extends APIHandler {
                 $link = new Link();
                 $link->short = $linkData['short'];
                 $link->link = $linkData['link'];
+                $link->noPreview = $linkData['noPreview'];
                 $link->uuid = $uuid;
                 $link->save();
             }
@@ -58,6 +59,7 @@ class LinkHandler extends APIHandler {
                 $data = json_decode($body, true)['data'][0];
                 isset($data['link']) ? $link->link = $data['link'] : null;
                 isset($data['short']) ? $link->short = $data['short'] : null;
+                isset($data['noPreview']) ? $link->noPreview = $data['noPreview'] : null;
                 $link->save();
                 print json_encode(array(
                     "data" => array(

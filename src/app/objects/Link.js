@@ -5,6 +5,7 @@ export default class Link {
     uuid;
     link;
     short;
+    noPreview;
     statistics;
 
     static fromObject(object) {
@@ -12,6 +13,7 @@ export default class Link {
         link.uuid = object.uuid;
         link.link = object.link;
         link.short = object.short;
+        link.noPreview = object.noPreview;
         link.statistics = Statistics.fromObject(object.statistics);
         return link;
     }

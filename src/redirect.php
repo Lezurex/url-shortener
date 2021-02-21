@@ -12,14 +12,21 @@ foreach ($requestParts as $key => $requestPart) {
 }
 $requestParts = array_values($requestParts);
 
-$data = json_decode(file_get_contents(__DIR__.'/data/data.json'), true);
+$data = json_decode(file_get_contents(__DIR__ . '/data/data.json'), true);
 
 foreach ($data['links'] as $linkData) {
-    $link = Link::fromArray($linkData);
-    if ($link->short === $requestParts[0]) {
+    if ($linkData['short'] === $requestParts[0]) {
+        $link = Link::fromArray($linkData);
         $link->statistics->addClick();
         $link->save();
-        header("Location: " . $link->link);
+        if ($link->noPreview) {
+            echo '
+        <script>window.location.href = "' . $link->link . '"</script>
+        <noscript><meta http-equiv="refresh" content="0; url=' . $link->link . '" /></noscript>
+        ';
+        } else {
+            header("Location: " . $link->link);
+        }
         exit();
     }
 }
