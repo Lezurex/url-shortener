@@ -6,7 +6,7 @@ Did you ever want to shorten URL's with your own domain? Now you can!
 ## Features
 - Put in a long URL and get a shortened link with your own domain
 - Manage all your created links
-- Create shortened URLs with a customized ID
+- Create shortened URLs with a customizeable ID/ending
 - Enable rickroll mode for shortened links without preview on social media and chat applications
 - See how many times your link has been clicked
 
