@@ -5,6 +5,7 @@ import Sidebar from "./components/Sidebar.js";
 import Links from "./components/Links.js";
 import LinkElement from "./components/LinkElement.js";
 import LinkAdder from "./components/LinkAdder.js";
+import Account from "./components/Account.js";
 
 const app = Vue.createApp({
     data() {
@@ -15,10 +16,12 @@ const app = Vue.createApp({
     template: `
       
         <login :main="this" v-if="loggedin === false"></login>
-        <dashboard @logout="loggedin = false" :main="this" v-if="loggedin === true"></dashboard>
+        <dashboard @logout="logout" :main="this" v-if="loggedin === true"></dashboard>
     `,
     methods: {
-
+        logout() {
+            this.loggedin = false;
+        }
     },
     mounted: function () {
         let that = this;
@@ -39,5 +42,6 @@ app.component("sidebar", Sidebar);
 app.component("links", Links);
 app.component("linkElement", LinkElement);
 app.component("linkAdder", LinkAdder);
+app.component("account", Account);
 
 const mountedApp = app.mount("app");
