@@ -5,7 +5,7 @@ export default class Link {
     uuid;
     link;
     short;
-    noPreview;
+    noPreview = false;
     statistics;
 
     static fromObject(object) {

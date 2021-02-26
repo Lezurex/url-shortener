@@ -15,7 +15,7 @@ const app = Vue.createApp({
     template: `
       
         <login :main="this" v-if="loggedin === false"></login>
-        <dashboard :main="this" v-if="loggedin === true"></dashboard>
+        <dashboard @logout="loggedin = false" :main="this" v-if="loggedin === true"></dashboard>
     `,
     methods: {
 

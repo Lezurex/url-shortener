@@ -33,6 +33,7 @@ class AuthHandler extends APIHandler {
             ));
             return;
         }
+
     }
 
     public function handlePost($parts, $body) {
@@ -77,25 +78,15 @@ class AuthHandler extends APIHandler {
         } elseif ($parts[2] === "logout") {
             session_start();
             session_destroy();
-            if (!isset($_SESSION['loggedin'])) {
-                echo json_encode(array(
-                    "data" => array(
-                        array(
-                            "status" => "success"
-                        )
+
+            echo json_encode(array(
+                "data" => array(
+                    array(
+                        "status" => "success"
                     )
-                ));
-                return;
-            } else {
-                echo json_encode(array(
-                    "data" => array(
-                        array(
-                            "status" => "error",
-                        )
-                    )
-                ));
-                return;
-            }
+                )
+            ));
+            return;
         }
     }
 

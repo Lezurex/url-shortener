@@ -7,12 +7,12 @@ export default {
             currentPage: "Links",
             pages: [
                 "Links",
-                "Accounts"
+                "Account"
             ]
         }
     },
     template: `
-        <top></top>
+        <top @logout="$emit('logout')"></top>
         <main>
           <aside>
             <sidebar @changepage="changePage" :currentPage="currentPage" :pages="pages"></sidebar>
