@@ -26,3 +26,5 @@ To stop the application run `docker-compose down` inside your folder.
 
 ## Setup
 All you have to know about the setup are the default credentials: `admin` as the username as well as the password!
+
+Change your username and password after first use!
