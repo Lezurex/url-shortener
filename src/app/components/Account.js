@@ -43,6 +43,9 @@ export default {
                     if (data.status === "success") {
                         that.status = "Credentials saved successfully!";
                         that.password = "";
+                        that.$emit("notification", "Credentials updated successfully!", true);
+                    } else {
+                        that.$emit("notification", "An error occurred while updating the credentials! Try again!", false);
                     }
                 }
             });
@@ -57,6 +60,8 @@ export default {
             if (request.status === 200) {
                 let data = JSON.parse(request.responseText).data[0];
                 that.username = data.username;
+            } else {
+                that.$emit("notification", "An error occurred while fetching data! Try again!", false);
             }
         });
         request.send();

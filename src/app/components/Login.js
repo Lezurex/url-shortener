@@ -50,6 +50,7 @@ export default {
                     let data = JSON.parse(request.responseText).data;
                     if (data[0].status === "success") {
                         that.main.loggedin = true;
+                        that.$emit("notification", "Login successful", true);
                     } else {
                         that.errorMsg = "The provided credentials are invalid!";
                     }

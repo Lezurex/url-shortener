@@ -106,6 +106,9 @@ export default {
                 if (saveRequest.status === 200) {
                     that.$emit("updatelinks");
                     that.$emit("close");
+                    that.$emit("notification", "Link added successfully!", true);
+                } else {
+                    that.$emit("notification", "Link couldn't be added! Try again!", false);
                 }
             });
             let body = JSON.stringify({

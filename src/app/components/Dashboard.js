@@ -21,8 +21,8 @@ export default {
             <sidebar @changepage="changePage" :currentPage="currentPage" :pages="pages"></sidebar>
           </aside>
           <div id="main-content">
-            <links v-if="currentPage === 'Links'"></links>
-            <account v-if="currentPage === 'Account'"></account>
+            <links @notification="emitNotification" v-if="currentPage === 'Links'"></links>
+            <account @notification="emitNotification" v-if="currentPage === 'Account'"></account>
           </div>
         </main>
     `,
@@ -32,6 +32,9 @@ export default {
         },
         logout() {
             this.$emit('logout');
+        },
+        emitNotification(text, success) {
+            this.$emit("notification", text, success);
         }
     }
 }

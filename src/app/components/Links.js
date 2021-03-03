@@ -14,10 +14,10 @@ export default {
       <h1>Links</h1>
       <p>Manage all your shortened links in one place!</p>
       <button @click="addNewLinkState = !addNewLinkState" class="btn btn-primary">+ Add new link</button>
-      <linkAdder @close="addNewLinkState = false" @updatelinks="getLinks" :allLinks="links" v-if="addNewLinkState"></linkAdder>
+      <linkAdder @notification="emitNotification" @close="addNewLinkState = false" @updatelinks="getLinks" :allLinks="links" v-if="addNewLinkState"></linkAdder>
       <hr>
       <ul id="links-list">
-        <linkElement @updatelinks="getLinks" v-for="link in links" :link="link" :allLinks="links"></linkElement>
+        <linkElement @notification="emitNotification" @updatelinks="getLinks" v-for="link in links" :key="link.uuid" :link="link" :allLinks="links"></linkElement>
       </ul>
     `,
     methods: {
@@ -33,9 +33,14 @@ export default {
                         let link = Link.fromObject(linkData);
                         that.links[link.uuid] = link;
                     });
+                } else {
+                    that.emitNotification("An error occurred while fetching data! Try again!");
                 }
             });
             linksRequest.send();
+        },
+        emitNotification(text, success) {
+            this.$emit("notification", text, success);
         }
     },
     mounted: function () {

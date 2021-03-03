@@ -6,21 +6,39 @@ import Links from "./components/Links.js";
 import LinkElement from "./components/LinkElement.js";
 import LinkAdder from "./components/LinkAdder.js";
 import Account from "./components/Account.js";
+import Notifications from "./components/Notifications.js";
 
 const app = Vue.createApp({
     data() {
         return {
-            loggedin: null
+            loggedin: null,
+            notification: {
+                text: "",
+                visible: false,
+                success: false,
+                timeout: undefined
+            }
         }
     },
     template: `
-      
-        <login :main="this" v-if="loggedin === false"></login>
-        <dashboard @logout="logout" :main="this" v-if="loggedin === true"></dashboard>
+        <notifications :notification="notification"></notifications>
+        <login @notification="showNotification" :main="this" v-if="loggedin === false"></login>
+        <dashboard @notification="showNotification" @logout="logout" :main="this" v-if="loggedin === true"></dashboard>
     `,
     methods: {
         logout() {
             this.loggedin = false;
+            this.showNotification("Logout successful", true);
+        },
+        showNotification(text, success) {
+            this.notification.text = text;
+            this.notification.success = success;
+            this.notification.visible = true;
+            const that = this;
+            clearTimeout(this.notification.timeout);
+            this.notification.timeout = setTimeout(function () {
+                that.notification.visible = false;
+            }, 5000);
         }
     },
     mounted: function () {
@@ -43,5 +61,6 @@ app.component("links", Links);
 app.component("linkElement", LinkElement);
 app.component("linkAdder", LinkAdder);
 app.component("account", Account);
+app.component("notifications", Notifications);
 
 const mountedApp = app.mount("app");

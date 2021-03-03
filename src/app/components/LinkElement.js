@@ -122,9 +122,12 @@ export default {
                 return;
             let saveRequest = new XMLHttpRequest();
             saveRequest.open("PUT", window.location.origin + "/api/links/" + this.link.uuid);
+            const that = this;
             saveRequest.addEventListener("load", function () {
                 if (saveRequest.status === 200) {
-
+                    that.emitNotification("Link saved successfully!", true);
+                } else {
+                    that.emitNotification("An error occurred while saving the link! Try again!", false);
                 }
             });
             let body = JSON.stringify({
@@ -179,7 +182,12 @@ export default {
                 let deleteRequest = new XMLHttpRequest();
                 deleteRequest.open("DELETE", window.location.origin + "/api/links/" + this.link.uuid);
                 deleteRequest.addEventListener("load", function () {
-                    that.$emit("updatelinks");
+                    if (deleteRequest.status === 200) {
+                        that.$emit("updatelinks");
+                        that.emitNotification("Link deleted successfully!", true);
+                    } else {
+                        that.emitNotification("An error occurred while deleting the link! Try again!", false);
+                    }
                 });
                 deleteRequest.send();
             } else {
@@ -195,6 +203,9 @@ export default {
                     return new bootstrap.Tooltip(tooltipTriggerEl)
                 })
             }
+        },
+        emitNotification(text, success) {
+            this.$emit("notification", text, success);
         }
     },
     created: function () {

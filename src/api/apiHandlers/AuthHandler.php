@@ -128,7 +128,9 @@ class AuthHandler extends APIHandler {
                         $userdata['username'] = $request['username'];
                     }
                     if (isset($request['password'])) {
-                        $userdata['password'] = password_hash($request['password'], PASSWORD_DEFAULT);
+                        if  ($request['password'] !== '') {
+                            $userdata['password'] = password_hash($request['password'], PASSWORD_DEFAULT);
+                        }
                     }
                     $data['user'] = $userdata;
 

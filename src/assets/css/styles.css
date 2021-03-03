@@ -87,3 +87,23 @@ aside ul li.active, aside ul li:hover {
     height: 1ch;
     display: none;
 }
+
+#notification-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+#notification {
+    opacity: 0;
+    margin: 1rem;
+    position: fixed;
+    z-index: 5;
+    box-shadow: 0 0 1rem rgba(0,0,0,0.5);
+    transition: .5s;
+}
+
+#notification.visible {
+    opacity: 1;
+    transition: .5s;
+}
