@@ -9,6 +9,7 @@ Did you ever want to shorten URL's with your own domain? Now you can!
 - Create shortened URLs with a customizeable ID/ending
 - Enable rickroll mode for shortened links without preview on social media and chat applications
 - See how many times your link has been clicked
+- Simple design
 
 ## Installation
 You can either run this application on an existing **Apache2 webserver** or via **docker-compose**.
