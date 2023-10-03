@@ -8,7 +8,13 @@ use APIHandlers\LinkHandler;
 
 header("content-type: application/json");
 
-$defaultStructure = array("links" => array(), "user" => array("username" => "admin", "password" => '$2y$10$YRveeDBJvB5pr.1/VaK/8e9AXKvqfY5s9tiDzvbXhWxFkiVLi74cC'));
+$defaultStructure = array(
+    "links" => array(),
+    "user" => array(
+        "username" => "admin",
+        "password" => '$2y$10$YRveeDBJvB5pr.1/VaK/8e9AXKvqfY5s9tiDzvbXhWxFkiVLi74cC'
+    )
+);
 
 if (!file_exists("../data/data.json")) {
     file_put_contents("../data/data.json", json_encode($defaultStructure));
@@ -33,10 +39,12 @@ switch ($requestParts[1]) {
         $handler = null;
         break;
 }
-if ($handler !== null)
+if ($handler !== null) {
     $handler->handle($requestParts);
-else {
-    print json_encode(array(
-        "version" => "1.0.0"
-    ));
+} else {
+    print json_encode(
+        array(
+            "version" => "1.0.0"
+        )
+    );
 }

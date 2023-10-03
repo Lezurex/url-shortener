@@ -3,40 +3,50 @@
 
 namespace APIHandlers;
 
+require_once 'APIHandler.php';
+require_once __DIR__ . '/../objects/Link.php';
+require_once __DIR__ . '/../objects/Statistics.php';
+
 use Objects\Link;
 
-require_once 'APIHandler.php';
-require_once __DIR__.'/../objects/Link.php';
-require_once __DIR__.'/../objects/Statistics.php';
+class LinkHandler extends APIHandler
+{
 
-class LinkHandler extends APIHandler {
-
-    public function handle($parts) {
+    public function handle($parts)
+    {
         session_start();
         if (!isset($_SESSION['loggedin'])) {
-            echo json_encode(array(
-                "data" => array(array(
-                    "status" => "error",
-                    "error" => "Session invalid"
-                ))
-            ));
+            echo json_encode(
+                array(
+                    "data" => array(
+                        array(
+                            "status" => "error",
+                            "error" => "Session invalid"
+                        )
+                    )
+                )
+            );
             http_send_status(400);
             exit();
         }
         parent::handle($parts);
     }
 
-    public function handleGet($parts, $body) {
+    public function handleGet($parts, $body)
+    {
         if (isset($parts[2])) {
             // do stuff
         } else {
-            print json_encode(array(
-                "data" =>  Link::getAll()
-            ));
+            print json_encode(
+                array(
+                    "data" => Link::getAll()
+                )
+            );
         }
     }
 
-    public function handlePost($parts, $body) {
+    public function handlePost($parts, $body)
+    {
         $data = json_decode($body, true)['data'];
         if ($data) {
             foreach ($data as $linkData) {
@@ -51,7 +61,8 @@ class LinkHandler extends APIHandler {
         }
     }
 
-    public function handlePut($parts, $body) {
+    public function handlePut($parts, $body)
+    {
         if (isset($parts[2])) {
             $link = Link::fromUUID($parts[2]);
 
@@ -61,47 +72,56 @@ class LinkHandler extends APIHandler {
                 isset($data['short']) ? $link->short = $data['short'] : null;
                 isset($data['noPreview']) ? $link->noPreview = $data['noPreview'] : null;
                 $link->save();
-                print json_encode(array(
-                    "data" => array(
-                        $link->toArray()
-                    )
-                ));
-            } else {
-                print json_encode(array(
-                    "data" => array(
-                        array(
-                            "status" => "error",
-                            "error" => "Not found"
+                print json_encode(
+                    array(
+                        "data" => array(
+                            $link->toArray()
                         )
                     )
-                ));
+                );
+            } else {
+                print json_encode(
+                    array(
+                        "data" => array(
+                            array(
+                                "status" => "error",
+                                "error" => "Not found"
+                            )
+                        )
+                    )
+                );
                 http_send_status(400);
             }
         }
     }
 
-    public function handleDelete($parts, $body) {
+    public function handleDelete($parts, $body)
+    {
         if (isset($parts[2])) {
             $link = Link::fromUUID($parts[2]);
 
             if ($link) {
                 $link->delete();
-                print json_encode(array(
-                    "data" => array(
-                        array(
-                            "status" => "success",
+                print json_encode(
+                    array(
+                        "data" => array(
+                            array(
+                                "status" => "success",
+                            )
                         )
                     )
-                ));
+                );
             } else {
-                print json_encode(array(
-                    "data" => array(
-                        array(
-                            "status" => "error",
-                            "error" => "Not found"
+                print json_encode(
+                    array(
+                        "data" => array(
+                            array(
+                                "status" => "error",
+                                "error" => "Not found"
+                            )
                         )
                     )
-                ));
+                );
                 http_send_status(400);
             }
         }

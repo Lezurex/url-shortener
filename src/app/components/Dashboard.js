@@ -1,20 +1,15 @@
 export default {
-    props: {
-        main: {}
-    },
-    emits: [
-        "logout"
-    ],
-    data() {
-        return {
-            currentPage: "Links",
-            pages: [
-                "Links",
-                "Account"
-            ]
-        }
-    },
-    template: `
+  props: {
+    main: {},
+  },
+  emits: ["logout"],
+  data() {
+    return {
+      currentPage: "Links",
+      pages: ["Links", "Account"],
+    };
+  },
+  template: `
         <top @logout="logout"></top>
         <main>
           <aside>
@@ -26,15 +21,15 @@ export default {
           </div>
         </main>
     `,
-    methods: {
-        changePage(page) {
-            this.currentPage = page;
-        },
-        logout() {
-            this.$emit('logout');
-        },
-        emitNotification(text, success) {
-            this.$emit("notification", text, success);
-        }
-    }
-}
+  methods: {
+    changePage(page) {
+      this.currentPage = page;
+    },
+    logout() {
+      this.$emit("logout");
+    },
+    emitNotification(text, success) {
+      this.$emit("notification", text, success);
+    },
+  },
+};

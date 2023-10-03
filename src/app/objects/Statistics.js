@@ -1,11 +1,9 @@
 export default class Statistics {
+  clicks;
 
-    clicks;
-
-    static fromObject(object) {
-        let statistics = new Statistics();
-        statistics.clicks = object.clicks;
-        return statistics;
-    }
-
+  static fromObject(object) {
+    let statistics = new Statistics();
+    statistics.clicks = object.clicks;
+    return statistics;
+  }
 }

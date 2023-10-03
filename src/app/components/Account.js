@@ -1,13 +1,13 @@
 export default {
-    props: {},
-    data() {
-        return {
-            username: "",
-            password: "",
-            status: ""
-        }
-    },
-    template: `
+  props: {},
+  data() {
+    return {
+      username: "",
+      password: "",
+      status: "",
+    };
+  },
+  template: `
       <h1>Account</h1>
       <p>Change the username and password of the account.</p>
       <div class="form-floating mb-3">
@@ -22,49 +22,60 @@ export default {
       <p style="color: var(--bs-success); margin-top: 1rem">{{status}}</p>
       </div>
     `,
-    methods: {
-        save() {
-            let data = {
-                "data": [
-                    {
-                        "username": this.username,
-                        "password": this.password
-                    }
-                ]
-            }
+  methods: {
+    save() {
+      let data = {
+        data: [
+          {
+            username: this.username,
+            password: this.password,
+          },
+        ],
+      };
 
-            const that = this;
+      const that = this;
 
-            const request = new XMLHttpRequest();
-            request.open("PUT", window.location.origin + "/api/auth/credentials")
-            request.addEventListener("load", function () {
-                if (request.status === 200) {
-                    let data = JSON.parse(request.responseText).data[0];
-                    if (data.status === "success") {
-                        that.status = "Credentials saved successfully!";
-                        that.password = "";
-                        that.$emit("notification", "Credentials updated successfully!", true);
-                    } else {
-                        that.$emit("notification", "An error occurred while updating the credentials! Try again!", false);
-                    }
-                }
-            });
-            request.send(JSON.stringify(data));
+      const request = new XMLHttpRequest();
+      request.open("PUT", window.location.origin + "/api/auth/credentials");
+      request.addEventListener("load", function () {
+        if (request.status === 200) {
+          let data = JSON.parse(request.responseText).data[0];
+          if (data.status === "success") {
+            that.status = "Credentials saved successfully!";
+            that.password = "";
+            that.$emit(
+              "notification",
+              "Credentials updated successfully!",
+              true
+            );
+          } else {
+            that.$emit(
+              "notification",
+              "An error occurred while updating the credentials! Try again!",
+              false
+            );
+          }
         }
+      });
+      request.send(JSON.stringify(data));
     },
-    mounted: function () {
-        const that = this;
-        let request = new XMLHttpRequest();
-        request.open("GET", window.location.origin + "/api/auth/info");
-        request.addEventListener("load", function () {
-            if (request.status === 200) {
-                let data = JSON.parse(request.responseText).data[0];
-                that.username = data.username;
-            } else {
-                that.$emit("notification", "An error occurred while fetching data! Try again!", false);
-            }
-        });
-        request.send();
-    }
-
-}
+  },
+  mounted: function () {
+    const that = this;
+    let request = new XMLHttpRequest();
+    request.open("GET", window.location.origin + "/api/auth/info");
+    request.addEventListener("load", function () {
+      if (request.status === 200) {
+        let data = JSON.parse(request.responseText).data[0];
+        that.username = data.username;
+      } else {
+        that.$emit(
+          "notification",
+          "An error occurred while fetching data! Try again!",
+          false
+        );
+      }
+    });
+    request.send();
+  },
+};

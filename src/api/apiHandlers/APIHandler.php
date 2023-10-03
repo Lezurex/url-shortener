@@ -3,9 +3,11 @@
 
 namespace APIHandlers;
 
-class APIHandler {
+class APIHandler
+{
 
-    public function handle($parts) {
+    public function handle($parts)
+    {
         $body = file_get_contents('php://input');
         switch ($_SERVER['REQUEST_METHOD']) {
             case "GET":
@@ -20,12 +22,23 @@ class APIHandler {
             case "DELETE":
                 $this->handleDelete($parts, $body);
                 break;
+            default:
+                http_response_code(405);
+                break;
         }
     }
 
-    public function handleGet($parts, $body) {}
-    public function handlePost($parts, $body) {}
-    public function handlePut($parts, $body) {}
-    public function handleDelete($parts, $body) {}
+    public function handleGet($parts, $body)
+    {
+    }
+    public function handlePost($parts, $body)
+    {
+    }
+    public function handlePut($parts, $body)
+    {
+    }
+    public function handleDelete($parts, $body)
+    {
+    }
 
 }

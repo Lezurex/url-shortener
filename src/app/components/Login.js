@@ -1,15 +1,15 @@
 export default {
-    props: {
-        main: {}
-    },
-    data() {
-        return {
-            errorMsg: "",
-            username: "",
-            password: ""
-        }
-    },
-    template: `
+  props: {
+    main: {},
+  },
+  data() {
+    return {
+      errorMsg: "",
+      username: "",
+      password: "",
+    };
+  },
+  template: `
       <div id="container-login">
       <div class="card">
         <div class="card-header">
@@ -30,34 +30,33 @@ export default {
       </div>
       </div>
     `,
-    methods: {
-        login() {
-            this.errorMsg = "";
-            let that = this;
+  methods: {
+    login() {
+      this.errorMsg = "";
+      let that = this;
 
-            if (this.username && this.password) {
-                let request = new XMLHttpRequest();
-                request.open("POST", window.location.origin + "/api/auth/login");
-                let body = JSON.stringify({
-                    "data": [
-                        {
-                            "username": this.username,
-                            "password": this.password
-                        }
-                    ]
-                });
-                request.addEventListener("load", function (event) {
-                    let data = JSON.parse(request.responseText).data;
-                    if (data[0].status === "success") {
-                        that.main.loggedin = true;
-                        that.$emit("notification", "Login successful", true);
-                    } else {
-                        that.errorMsg = "The provided credentials are invalid!";
-                    }
-                });
-                request.send(body);
-            } else
-                this.errorMsg = "Please fill out all fields!";
-        }
-    }
-}
+      if (this.username && this.password) {
+        let request = new XMLHttpRequest();
+        request.open("POST", window.location.origin + "/api/auth/login");
+        let body = JSON.stringify({
+          data: [
+            {
+              username: this.username,
+              password: this.password,
+            },
+          ],
+        });
+        request.addEventListener("load", function (event) {
+          let data = JSON.parse(request.responseText).data;
+          if (data[0].status === "success") {
+            that.main.loggedin = true;
+            that.$emit("notification", "Login successful", true);
+          } else {
+            that.errorMsg = "The provided credentials are invalid!";
+          }
+        });
+        request.send(body);
+      } else this.errorMsg = "Please fill out all fields!";
+    },
+  },
+};

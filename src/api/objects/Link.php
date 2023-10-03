@@ -5,8 +5,10 @@ namespace Objects;
 
 require_once 'Statistics.php';
 
+use Objects\Statistics;
 
-class Link {
+class Link
+{
 
     public string $uuid;
     public string $link;
@@ -18,22 +20,23 @@ class Link {
     /**
      * Link constructor.
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->statistics = new Statistics();
     }
 
-
-    public static function fromUUID($uuid) : Link|bool {
-        $linksArray = json_decode(file_get_contents(__DIR__."/../../data/data.json"), true)['links'];
+    public static function fromUUID($uuid): Link|bool
+    {
+        $linksArray = json_decode(file_get_contents(__DIR__ . "/../../data/data.json"), true)['links'];
         if (isset($linksArray[$uuid])) {
             $linkData = $linksArray[$uuid];
-            $link = self::fromArray($linkData);
-            return $link;
+            return self::fromArray($linkData);
         }
         return false;
     }
 
-    public static function fromArray($array) : Link {
+    public static function fromArray($array): Link
+    {
         $link = new Link();
         $link->uuid = $array['uuid'];
         $link->link = $array['link'];
@@ -43,8 +46,9 @@ class Link {
         return $link;
     }
 
-    public static function getAll() : array {
-        $data = json_decode(file_get_contents(__DIR__."/../../data/data.json"), true);
+    public static function getAll(): array
+    {
+        $data = json_decode(file_get_contents(__DIR__ . "/../../data/data.json"), true);
         $links = $data['links'];
         $array = array();
         foreach ($links as $linkData) {
@@ -54,19 +58,22 @@ class Link {
         return $array;
     }
 
-    public function save() {
-        $data = json_decode(file_get_contents(__DIR__.'/../../data/data.json'), true);
+    public function save()
+    {
+        $data = json_decode(file_get_contents(__DIR__ . '/../../data/data.json'), true);
         $data['links'][$this->uuid] = $this->toArray();
-        file_put_contents(__DIR__.'/../../data/data.json', json_encode($data));
+        file_put_contents(__DIR__ . '/../../data/data.json', json_encode($data));
     }
 
-    public function delete() {
-        $data = json_decode(file_get_contents(__DIR__.'/../../data/data.json'), true);
+    public function delete()
+    {
+        $data = json_decode(file_get_contents(__DIR__ . '/../../data/data.json'), true);
         unset($data['links'][$this->uuid]);
-        file_put_contents(__DIR__.'/../../data/data.json', json_encode($data));
+        file_put_contents(__DIR__ . '/../../data/data.json', json_encode($data));
     }
 
-    public function toArray(): array {
+    public function toArray(): array
+    {
         return array(
             "uuid" => $this->uuid,
             "link" => $this->link,

@@ -2,7 +2,7 @@ version: "3.6"
 
 services: 
   php:
-    image: bitnami/php-fpm:8.0
+    image: bitnami/php-fpm:8.1
     volumes:
       - ./src:/app
       - ./php/php.ini:/opt/bitnami/php/etc/conf.d/php.ini:ro
