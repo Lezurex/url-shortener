@@ -1,0 +1,15 @@
+name: Build and Push Container Image
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: podman
+    steps:
+      - uses: actions/checkout@v4
+      - name: Login to Registry
+        run: echo ${{ secrets.IMAGE_DEPLOY_TOKEN }} | podman login -u ${{ secrets.IMAGE_DEPLOY_USER }} --password-stdin codeberg.org
+      - name: Build Container Image
+        run: podman build -t "codeberg.org/lezurex/url-shortener:${{ forgejo.ref_name }}" .
+      - name: Push to Registry
+        run: podman push "codeberg.org/lezurex/url-shortener:${{ forgejo.ref_name }}"
