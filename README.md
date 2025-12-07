@@ -34,8 +34,8 @@ strong typed methods and class properties are used!
 
 ### 🐳 Installation with docker-compose
 
-Copy the whole repo into a folder, navigate into it and run `docker-compose up -d`
-and you are ready to go!
+Copy `examples/docker-compose.yml`into a folder, navigate into it and run
+`docker-compose up -d` and you are ready to go!
 
 The default port for the dockerized Apache2 webserver ist set to **8080**.
 You may want to change this in your `docker-compose.yml`.

@@ -1,10 +1,7 @@
 services: 
   url-shortener:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: codeberg.org/lezurex/url-shortener:latest # <= RECOMMENDED: change to fixed version
     volumes:
-      - ./src:/var/www/html/:ro
       - data:/var/www/html/data:rw
     ports:
     - "8080:8080"
