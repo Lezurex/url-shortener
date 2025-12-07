@@ -5,11 +5,71 @@ on: [push]
 jobs:
   build:
     runs-on: podman
+    env:
+      REGISTRY: codeberg.org
     steps:
       - uses: actions/checkout@v4
+
+      - name: Compute image variables
+        run: |
+          # repository (owner/name) to lowercase
+          repo="${{ forgejo.repository }}"
+          repo_lower="$(echo "$repo" | tr '[:upper:]' '[:lower:]')"
+          echo "REPO_LOWER=$repo_lower" >> "$GITHUB_ENV"
+
+          # full ref, e.g. refs/heads/main or refs/tags/v1.2.3
+          ref_full="${{ forgejo.ref }}"
+          ref_name="${{ forgejo.ref_name }}"
+
+          tag=""
+          extra_tag=""
+
+          case "$ref_full" in
+            refs/tags/*)
+              # use tag name as image tag
+              tag="$ref_name"
+
+              # only "stable" tags without '-' also get :latest
+              case "$ref_name" in
+                *-*)
+                  # pre-release (v1.2.3-rc1) -> no latest
+                  ;;
+                *)
+                  extra_tag="latest"
+                  ;;
+              esac
+              ;;
+            refs/heads/*)
+              # branches -> branch name with / replaced by -
+              tag="$(echo "$ref_name" | tr '/' '-')"
+              ;;
+            *)
+              echo "Unknown ref type: $ref_full"
+              exit 1
+              ;;
+          esac
+
+          echo "TAG=$tag" >> "$GITHUB_ENV"
+          echo "EXTRA_TAG=$extra_tag" >> "$GITHUB_ENV"
+
       - name: Login to Registry
-        run: echo ${{ secrets.IMAGE_DEPLOY_TOKEN }} | podman login -u ${{ secrets.IMAGE_DEPLOY_USER }} --password-stdin codeberg.org
-      - name: Build Container Image
-        run: podman build -t "codeberg.org/lezurex/url-shortener:${{ forgejo.ref_name }}" .
-      - name: Push to Registry
-        run: podman push "codeberg.org/lezurex/url-shortener:${{ forgejo.ref_name }}"
+        run: echo ${{ secrets.IMAGE_DEPLOY_TOKEN }} | podman login -u ${{ secrets.IMAGE_DEPLOY_USER }} --password-stdin "$REGISTRY"
+      - name: Build & Push Container Image
+        run: |
+          base_image="$REGISTRY/${REPO_LOWER}"
+          image="$base_image:$TAG"
+
+          echo "Building image: $image"
+          podman build -t "$image" .
+
+          echo "Pushing image: $image"
+          podman push "$image"
+
+          # only for "stable" tags: also push :latest
+          if [ -n "$EXTRA_TAG" ]; then
+            extra_image="$base_image:$EXTRA_TAG"
+            echo "Tagging as: $extra_image"
+            podman tag "$image" "$extra_image"
+            echo "Pushing extra tag: $extra_image"
+            podman push "$extra_image"
+          fi
