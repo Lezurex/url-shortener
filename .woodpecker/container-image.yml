@@ -1,0 +1,16 @@
+when:
+  - event: push
+    branch: main
+  - event: tag
+
+steps:
+  - name: build-and-push
+    image: woodpeckerci/plugin-docker-buildx
+    settings:
+      registry: codeberg.org
+      repo: codeberg.org/lezurex/url-shortener
+      auto_tag: true
+
+      username: ${CI_REPO_OWNER}
+      password:
+        from_secret: cb_token
